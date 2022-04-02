@@ -7,7 +7,7 @@ onready var soundFX := Node2D.new()
 onready var player: Player = $'../scene/player'
 
 const _bullet: PackedScene = preload("res://objects/bullet.tscn")
-const _bubble: PackedScene = preload("res://objects/bubble.tscn")
+const _enemy_bubble: PackedScene = preload("res://objects/enemy_bubble.tscn")
 
 var sounds: Dictionary
 

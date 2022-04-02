@@ -12,8 +12,10 @@ func _physics_process(delta: float) -> void:
 		self.apply_central_impulse(Vector2(0, -1) * speed * delta)
 	
 	if Input.is_action_pressed("fire"):
-		fire(get_angle_to(get_global_mouse_position()) + PI/2.0, 1000, 1, 1)
+		fire(get_angle_to(get_global_mouse_position()) + PI/2.0)
 
+func destroy() -> void:
+	hide()
 
 func _on_fire_timer_timeout() -> void:
 	._on_fire_timer_timeout()
