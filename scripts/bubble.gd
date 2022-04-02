@@ -8,12 +8,19 @@ export(float) var speed := 10000.0
 export(float) var fire_rate := 2.0 setget set_fire_rate
 
 onready var fire_timer: Timer = $fire_timer
+onready var sprite: Sprite = $Sprite
+
+var sprite_init_scale: Vector2
 
 var can_fire := false
 var weapons := [ ]
 
 func _ready() -> void:
 	set_fire_rate(fire_rate)
+	sprite_init_scale = sprite.scale
+
+func _process(delta: float) -> void:
+	sprite.scale = sprite_init_scale + (linear_velocity / 15000.0).abs()
 
 func _integrate_forces(state):
 	rotation_degrees = 0
@@ -21,7 +28,9 @@ func _integrate_forces(state):
 func set_fire_rate(v: float):
 	fire_rate = v
 	if fire_timer != null:
-		fire_timer.start(1.0 / fire_rate)
+		var dur = 1.0 / fire_rate
+		fire_timer.start(dur * rand_range(0.0, 1.0))
+		fire_timer.wait_time = dur
 
 func set_hp(v: float):
 	hp = v

@@ -5,6 +5,8 @@ var hp := 1.0
 var vel := Vector2.ZERO
 
 func _process(delta: float) -> void:
+	if position.distance_to(Game.player.position) < 150.0:
+		vel = vel.linear_interpolate((Game.player.position - position).normalized() * 1000.0, 0.1)
 	position += vel * delta
 	vel *= 0.99
 

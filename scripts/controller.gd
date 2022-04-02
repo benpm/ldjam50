@@ -4,8 +4,9 @@ extends Node2D
 
 onready var music := AudioStreamPlayer.new()
 onready var soundFX := Node2D.new()
-onready var player: Player = $'../scene/player'
-onready var nav: Navigation2D = $'../scene/nav'
+onready var scene := $"../scene_container/scene"
+onready var player: Player = scene.get_node("player")
+onready var nav: Navigation2D = scene.get_node("nav")
 
 const _bullet: PackedScene = preload("res://objects/bullet.tscn")
 const _enemy_bubble: PackedScene = preload("res://objects/enemy_bubble.tscn")
