@@ -13,3 +13,6 @@ func _process(delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	apply_central_impulse(dir * speed * delta)
+
+func _on_bullet_hit(bullet) -> void:
+	._on_bullet_hit(bullet)

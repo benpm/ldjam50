@@ -19,3 +19,6 @@ func destroy() -> void:
 
 func _on_fire_timer_timeout() -> void:
 	._on_fire_timer_timeout()
+
+func _on_bullet_hit(bullet) -> void:
+	._on_bullet_hit(bullet)

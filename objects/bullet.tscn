@@ -17,4 +17,8 @@ texture = ExtResource( 1 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
 
+[node name="vanish_timer" type="Timer" parent="."]
+wait_time = 2.0
+
 [connection signal="body_entered" from="." to="." method="_on_bullet_body_entered"]
+[connection signal="timeout" from="vanish_timer" to="." method="_on_vanish_timer_timeout"]

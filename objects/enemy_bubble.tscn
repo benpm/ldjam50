@@ -10,3 +10,5 @@ fire_rate = 0.5
 
 [node name="default_weapon" type="Node" parent="." index="3"]
 script = ExtResource( 3 )
+
+[connection signal="bullet_hit" from="." to="." method="_on_bullet_hit"]

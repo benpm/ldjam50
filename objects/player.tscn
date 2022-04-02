@@ -13,3 +13,5 @@ texture = ExtResource( 3 )
 
 [node name="default_weapon" type="Node" parent="." index="3"]
 script = ExtResource( 4 )
+
+[connection signal="bullet_hit" from="." to="." method="_on_bullet_hit"]

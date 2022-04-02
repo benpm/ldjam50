@@ -1,6 +1,8 @@
 extends RigidBody2D
 class_name Bubble
 
+signal bullet_hit(bullet)
+
 export(float) var hp := 10.0 setget set_hp 
 export(float) var speed := 500.0 setget set_speed
 export(float) var fire_rate := 2.0 setget set_fire_rate
@@ -38,7 +40,7 @@ func fire(angle: float) -> void:
 			get_parent().add_child(bullet)
 	can_fire = false
 
-func on_bullet_hit(bullet: Bullet) -> void:
+func _on_bullet_hit(bullet) -> void:
 	if bullet.creator != self:
 		set_hp(hp - bullet.dmg)
 
