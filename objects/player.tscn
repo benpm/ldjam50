@@ -10,7 +10,6 @@ radius = 40.05
 [node name="player" type="RigidBody2D"]
 linear_damp = 20.0
 script = ExtResource( 2 )
-fire_rate = 20.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )

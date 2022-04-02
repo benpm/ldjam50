@@ -4,7 +4,7 @@ class_name Bubble
 signal bullet_hit(bullet)
 
 export(float) var hp := 10.0 setget set_hp 
-export(float) var speed := 500.0 setget set_speed
+export(float) var speed := 10000.0
 export(float) var fire_rate := 2.0 setget set_fire_rate
 
 onready var fire_timer: Timer = $fire_timer
@@ -15,16 +15,13 @@ var weapons := [ ]
 func _ready() -> void:
 	set_fire_rate(fire_rate)
 	mode = MODE_CHARACTER
-	
+
 func set_fire_rate(v: float):
+	fire_rate = v
 	if fire_timer != null:
-		fire_rate = v
 		fire_timer.start(1.0 / fire_rate)
 		print_stack()
 		print_debug("%f %f" % [fire_timer.wait_time, fire_rate])
-
-func set_speed(v: float):
-	speed = v * linear_damp
 
 func set_hp(v: float):
 	hp = v
