@@ -2,7 +2,6 @@
 
 extends Node2D
 
-onready var zone_tween := Tween.new()
 onready var music := AudioStreamPlayer.new()
 onready var soundFX := Node2D.new()
 onready var player: Player = $'../scene/player'
@@ -32,11 +31,7 @@ func _ready() -> void:
 			soundFX.add_child(streamPlayer)
 		fname = audioDir.get_next()
 	
-	sounds["walk"].stream.loop = true
 	add_child(soundFX)
-
-	zone_tween.repeat = false
-	add_child(zone_tween)
 
 	# music.stream = load("res://audio/music.mp3")
 	# music.stream.loop = true
