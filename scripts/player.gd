@@ -1,6 +1,10 @@
 extends Bubble
 class_name Player
 
+func _ready() -> void:
+	._ready()
+	print_debug(fire_rate)
+
 func _physics_process(delta: float) -> void:
 	if Input.is_action_pressed("left"):
 		self.apply_central_impulse(Vector2(-1, 0) * speed * delta)

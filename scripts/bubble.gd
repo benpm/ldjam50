@@ -19,7 +19,9 @@ func _ready() -> void:
 func set_fire_rate(v: float):
 	if fire_timer != null:
 		fire_rate = v
-		fire_timer.wait_time = 1.0 / fire_rate
+		fire_timer.start(1.0 / fire_rate)
+		print_stack()
+		print_debug("%f %f" % [fire_timer.wait_time, fire_rate])
 
 func set_speed(v: float):
 	speed = v * linear_damp

@@ -27,7 +27,7 @@ _global_script_classes=[ {
 "base": "Node2D",
 "class": "LevelManager",
 "language": "GDScript",
-"path": "res://levels/level_manager.gd"
+"path": "res://scripts/level_manager.gd"
 }, {
 "base": "Bubble",
 "class": "Player",
@@ -127,6 +127,7 @@ fire={
 
 common/enable_pause_aware_picking=true
 2d/default_gravity=0
+2d/default_linear_damp=20.0
 
 [rendering]
 
