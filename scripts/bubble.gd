@@ -20,8 +20,6 @@ func set_fire_rate(v: float):
 	fire_rate = v
 	if fire_timer != null:
 		fire_timer.start(1.0 / fire_rate)
-		print_stack()
-		print_debug("%f %f" % [fire_timer.wait_time, fire_rate])
 
 func set_hp(v: float):
 	hp = v
@@ -42,7 +40,8 @@ func fire(angle: float) -> void:
 func _on_bullet_hit(bullet) -> void:
 	if bullet.creator != self:
 		set_hp(hp - bullet.dmg)
-
+		var r = bullet.rotation - PI / 2.0
+		apply_central_impulse(Vector2(1,0).rotated(r) * 1000.0 * bullet.knockback)
 
 func _on_fire_timer_timeout() -> void:
 	can_fire = true
