@@ -11,7 +11,7 @@ func _physics_process(delta: float) -> void:
 	move_local_y(-speed * delta)
 
 func _on_bullet_body_entered(body: Node) -> void:
-	if body == creator: return
+	if body == creator || (body.has_signal("bullet_hit") && creator != Game.player && body != Game.player): return
 	if body.has_signal("bullet_hit"):
 		body.call_deferred("_on_bullet_hit", self)
 	

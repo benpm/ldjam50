@@ -5,11 +5,15 @@ extends Node2D
 onready var music := AudioStreamPlayer.new()
 onready var soundFX := Node2D.new()
 onready var player: Player = $'../scene/player'
+onready var nav: Navigation2D = $'../scene/nav'
 
 const _bullet: PackedScene = preload("res://objects/bullet.tscn")
 const _enemy_bubble: PackedScene = preload("res://objects/enemy_bubble.tscn")
+const _droplet: PackedScene = preload("res://objects/droplet.tscn")
 
 var sounds: Dictionary
+
+var enemy_count := 0
 
 # Called on game start
 func _ready() -> void:
@@ -54,3 +58,9 @@ func sound_playing(name: String, playing: bool, pos = null):
 	if pos != null:
 		sounds[name].position = pos
 
+func make_droplet(pos: Vector2, vel: Vector2, amount: float):
+	var node: Droplet = _droplet.instance()
+	node.position = pos
+	node.hp = amount
+	node.vel = vel
+	add_child(node)
