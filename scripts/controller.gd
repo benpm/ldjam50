@@ -6,6 +6,9 @@ onready var music := AudioStreamPlayer.new()
 onready var soundFX := Node2D.new()
 onready var player: Player = $'../scene/player'
 
+const _bullet: PackedScene = preload("res://objects/bullet.tscn")
+const _bubble: PackedScene = preload("res://objects/bubble.tscn")
+
 var sounds: Dictionary
 
 # Called on game start
@@ -50,3 +53,4 @@ func sound_playing(name: String, playing: bool, pos = null):
 		sounds[name].playing = playing
 	if pos != null:
 		sounds[name].position = pos
+
