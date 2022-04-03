@@ -1,8 +1,8 @@
 extends Area2D
 class_name Droplet
 
-func is_class(name: String) -> bool:
-	return .is_class(name) or name == "Droplet"
+func get_class(): return "Droplet"
+func is_class(name): return name == get_class() or name == .get_class() or .is_class(name)
 
 var hp := 1.0 setget set_hp
 var vel := Vector2.ZERO

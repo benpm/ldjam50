@@ -6,16 +6,27 @@ onready var music := AudioStreamPlayer.new()
 onready var soundFX := Node2D.new()
 onready var scene := $"../scene_container/scene"
 onready var ui_node := $"../scene_container/UI"
-onready var player: Player = scene.get_node("player")
+onready var ui := $"../scene_container/UI/container"
+var player: Player
 onready var nav: Navigation2D = scene.get_node("nav")
+onready var ui_death_screen: Control = ui.get_node("death_screen")
+onready var ui_score_text: Label = ui_death_screen.get_node("death_container/score_text")
+onready var ui_hp_bar: TextureProgress = ui.get_node("hp_bar_container/hp_bar")
 
 const _bullet: PackedScene = preload("res://objects/bullet.tscn")
 const _enemy_bubble: PackedScene = preload("res://objects/enemy_bubble.tscn")
 const _droplet: PackedScene = preload("res://objects/droplet.tscn")
+const _player: PackedScene = preload("res://objects/player.tscn")
 
 var sounds: Dictionary
 
 var enemy_count := 0
+
+var score := 0.0
+
+const MAIN_LAYER: int = 1
+const ENEMY_BULLET_LAYER: int = 2
+const PLAYER_BULLET_LAYER: int = 4
 
 # Called on game start
 func _ready() -> void:
@@ -47,6 +58,31 @@ func _ready() -> void:
 	# music.play()
 	# music.volume_db = -7.0
 	# add_child(music)
+
+	start_game()
+
+func start_game():
+	ui_death_screen.hide()
+	ui.get_node("hp_bar_container/hp_bar").show()
+	score = 0.0
+	enemy_count = 0
+	var children = get_children()
+	for c in children:
+		if c.is_class("Enemy"):
+			c.get_parent().remove_child(c)
+	if player: player.get_parent().remove_child(player)
+	player = _player.instance()
+	add_child(player)
+
+func _process(delta: float) -> void:
+	if player and not player.dead:
+		score += delta
+
+func _input(event: InputEvent) -> void:
+	if event.is_pressed():
+		if event.as_text() == "K":
+			player.destroy()
+
 # Call to play a sound
 func play_sound(name: String, pos = null):
 	sounds[name].stop()
@@ -66,3 +102,9 @@ func make_droplet(pos: Vector2, vel: Vector2, amount: float):
 	node.hp = amount
 	node.vel = vel
 	add_child(node)
+
+func player_died():
+	ui_death_screen.show()
+	ui_score_text.text = "%.1f" % score
+	ui.get_node("hp_bar_container/hp_bar").hide()
+

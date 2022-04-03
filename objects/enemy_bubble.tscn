@@ -8,6 +8,7 @@
 radius = 40.05
 
 [node name="enemy_bubble" type="RigidBody2D"]
+collision_mask = 5
 linear_damp = 20.0
 script = ExtResource( 2 )
 hp = 5.0
@@ -23,8 +24,11 @@ texture = ExtResource( 1 )
 [node name="fire_timer" type="Timer" parent="."]
 wait_time = 0.25
 
+[node name="path_timer" type="Timer" parent="."]
+wait_time = 3.0
+
 [node name="default_weapon" type="Node" parent="."]
 script = ExtResource( 3 )
 
-[connection signal="bullet_hit" from="." to="." method="_on_bullet_hit"]
 [connection signal="timeout" from="fire_timer" to="." method="_on_fire_timer_timeout"]
+[connection signal="timeout" from="path_timer" to="." method="_on_path_timer_timeout"]
