@@ -10,6 +10,7 @@ radius = 40.05
 [node name="enemy_bubble" type="RigidBody2D"]
 linear_damp = 20.0
 script = ExtResource( 2 )
+hp = 5.0
 fire_rate = 0.5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

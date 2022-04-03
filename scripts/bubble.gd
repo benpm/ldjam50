@@ -1,11 +1,16 @@
 extends RigidBody2D
 class_name Bubble
 
+func is_class(name: String) -> bool:
+	return .is_class(name) or name == "Bubble"
+
 signal bullet_hit(bullet)
 
 export(float) var hp := 10.0 setget set_hp
 export(float) var speed := 10000.0
 export(float) var fire_rate := 2.0 setget set_fire_rate
+
+var max_hp := 40.0
 
 onready var fire_timer: Timer = $fire_timer
 onready var sprite: Sprite = $Sprite
@@ -51,9 +56,15 @@ func fire(angle: float) -> void:
 func _on_bullet_hit(bullet) -> void:
 	if bullet.creator != self:
 		set_hp(hp - bullet.dmg)
+		print_debug("%s: %f damage taken" % [name, bullet.dmg])
 		var r = bullet.rotation - PI / 2.0
-		Game.make_droplet(bullet.position,
-			Vector2(1,rand_range(-0.7, 0.7)).rotated(r)*bullet.speed*rand_range(0.1, 0.25), bullet.dmg)
+		if self != Game.player:
+			Game.make_droplet(bullet.position,
+				Vector2(1,rand_range(-0.7, 0.7)).rotated(r)*bullet.speed*rand_range(0.1, 0.25), bullet.dmg)
+			if hp <= 0.0:
+				for _i in range(rand_range(2, 15)):
+					Game.make_droplet(bullet.position,
+					Vector2(1,rand_range(-1.2, 1.2)).rotated(r)*bullet.speed*rand_range(0.1, 0.25)*3.0, bullet.dmg)
 		apply_central_impulse(Vector2(1,0).rotated(r) * 1000.0 * bullet.knockback)
 
 func _on_fire_timer_timeout() -> void:

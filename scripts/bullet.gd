@@ -1,6 +1,9 @@
 extends Area2D
 class_name Bullet
 
+func is_class(name: String) -> bool:
+	return .is_class(name) or name == "Bullet"
+
 var dmg := 1.0
 var speed := 500.0
 var knockback := 1.0

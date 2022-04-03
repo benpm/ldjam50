@@ -1,6 +1,9 @@
 extends Node
 class_name Weapon
 
+func is_class(name: String) -> bool:
+	return .is_class(name) or name == "Weapon"
+
 export(float) var bullet_size := 1.0
 export(float) var speed := 1.0
 export(float) var damage := 1.0

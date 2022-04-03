@@ -5,6 +5,7 @@ extends Node2D
 onready var music := AudioStreamPlayer.new()
 onready var soundFX := Node2D.new()
 onready var scene := $"../scene_container/scene"
+onready var ui_node := $"../scene_container/UI"
 onready var player: Player = scene.get_node("player")
 onready var nav: Navigation2D = scene.get_node("nav")
 
