@@ -8,6 +8,10 @@ var evap_rate: float = 0.1
 var dead := false
 
 const max_evap := 4.0
+var dash := 10000.0
+var dash_cost := 1.5
+
+var dir: Vector2
 
 func _ready() -> void:
 	Game.lvl.ui_hp_bar.max_value = 1.0
@@ -24,12 +28,18 @@ func _process(delta: float) -> void:
 	else:
 		Game.lvl.ui_hp_bar.modulate = Color.white
 
+func _input(event):
+	if event.is_action_pressed("dash"):
+		Game.play_sound("dash", position)
+		apply_central_impulse((get_global_mouse_position() - position).normalized() * dash)
+		set_hp(hp - dash_cost)
+
 func _physics_process(delta: float) -> void:
 	if dead:
 		self.linear_velocity = Vector2.ZERO
 		return
 
-	var dir = Vector2.ZERO
+	dir = Vector2.ZERO
 	if Input.is_action_pressed("left"):
 		dir += Vector2(-1, 0)
 	if Input.is_action_pressed("right"):
@@ -45,7 +55,7 @@ func _physics_process(delta: float) -> void:
 		fire(get_angle_to(get_global_mouse_position()) + PI/2.0)
 	
 	sprite.rotation = atan2(self.linear_velocity.y, self.linear_velocity.x)
-	sprite.scale.x = sprite_init_scale.x + self.linear_velocity.length() * 1e-4
+	sprite.scale.x = min(sprite_init_scale.x * 2, sprite_init_scale.x + self.linear_velocity.length() * 1e-4)
 
 func destroy() -> void:
 	if dead: return

@@ -9,7 +9,7 @@ var dir: Vector2
 var path: PoolVector2Array
 var path_idx: int
 
-enum Behavior { Chase, Snipe }
+enum Behavior { Chase, Snipe, Turret, Kamikaze }
 
 export(Behavior) var behavior: int = Behavior.Chase
 export(bool) var smart_aim := false
@@ -21,7 +21,12 @@ func _ready() -> void:
 	recompute_path()
 
 func _process(delta: float) -> void:
-	if path_idx < path.size():
+	if behavior == Behavior.Turret:
+		if position.distance_to(Game.lvl.player.position) < 2000.0:
+			sprite.rotation += delta
+			if can_fire:
+				fire(randf() * TAU)
+	elif path_idx < path.size():
 		var p: Vector2 = path[path_idx]
 		var aim_point: Vector2 = Game.lvl.player.position
 		if smart_aim:
@@ -40,6 +45,8 @@ func _process(delta: float) -> void:
 					dir = dir.linear_interpolate((p - position).normalized(), 0.05)
 				if can_fire:
 					fire(get_angle_to(aim_point) + PI/2.0)
+			Behavior.Kamikaze:
+				dir = dir.linear_interpolate((p - position).normalized(), 0.125)
 		if dir.length() > 0.1:
 			sprite.rotation = atan2(dir.y, dir.x) + PI/2.0
 			apply_central_impulse(dir.normalized() * speed * (1/(freeze + 1)) * delta)
@@ -57,3 +64,10 @@ func _on_path_timer_timeout() -> void:
 func recompute_path():
 	path = Game.lvl.nav.get_simple_path(position, Game.lvl.player.position)
 	path_idx = 0
+
+
+
+func _on_body_entered(body:Node) -> void:
+	if body == Game.lvl.player and behavior == Behavior.Kamikaze:
+		body.apply_damage(15.0, 0.0, sprite.rotation, position, speed, 2.0)
+		self.apply_damage(100.0, 0.0, -sprite.rotation, body.position, speed, 2.0)

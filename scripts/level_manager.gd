@@ -28,6 +28,8 @@ var paused := false setget set_paused
 
 var score_submitted := false
 
+var wave_timer := 0.0
+
 func _enter_tree() -> void:
 	self.player = Game._player.instance()
 
@@ -38,7 +40,9 @@ func _ready() -> void:
 	set_paused(false)
 	
 func _on_spawn_timer_timeout() -> void:
-	if enemy_count == 0:
+	if enemy_count <= 3 || wave_timer > 30.0 + 5.0 * wave:
+		wave_timer = 0.0
+		Game.play_sound("wave", player.position)
 		if wave > 0:
 			_on_power_timer_timeout()
 		var total_enemy_hp := 0.0
@@ -89,6 +93,7 @@ func restart_level():
 func _process(delta: float) -> void:
 	if player and not player.dead:
 		score += delta
+		wave_timer += delta
 
 func _on_name_text_text_entered(new_text:String) -> void:
 	player_name = new_text

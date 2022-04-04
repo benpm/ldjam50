@@ -78,19 +78,22 @@ func fire(angle: float) -> void:
 	Game.play_sound("hit2", position)
 
 func on_bullet_hit(bullet) -> void:
+	apply_damage(bullet.dmg, bullet.freeze, bullet.rotation, bullet.position, bullet.speed, bullet.knockback)
+
+func apply_damage(dmg: float, _freeze: float, angle: float, pos: Vector2, _speed: float, knockback: float):
 	if hp <= 0.0: return
-	set_hp(hp - bullet.dmg)
-	freeze += bullet.freeze
+	set_hp(hp - dmg)
+	self.freeze += _freeze
 	Game.play_sound("hit3", position)
-	var r = bullet.rotation - PI / 2.0
+	var r = angle - PI / 2.0
 	if self != Game.lvl.player:
-		Game.lvl.make_droplet(bullet.position,
-			Vector2(1,rand_range(-0.7, 0.7)).rotated(r)*bullet.speed*rand_range(0.1, 0.25), rand_range(0.5, 2.0))
+		Game.lvl.make_droplet(pos,
+			Vector2(1,rand_range(-0.7, 0.7)).rotated(r)*_speed*rand_range(0.1, 0.25), rand_range(0.5, 2.0))
 		if hp <= 0.0:
 			for _i in range(rand_range(init_hp * 0.5, init_hp)):
-				Game.lvl.make_droplet(bullet.position,
-				Vector2(1,rand_range(-1.2, 1.2)).rotated(r)*bullet.speed*rand_range(0.1, 0.25)*3.0, rand_range(0.5, 2.0))
-	apply_central_impulse(Vector2(1,0).rotated(r) * 1000.0 * bullet.knockback)
+				Game.lvl.make_droplet(pos,
+				Vector2(1,rand_range(-1.2, 1.2)).rotated(r)*_speed*rand_range(0.1, 0.25)*3.0, rand_range(0.5, 2.0))
+	apply_central_impulse(Vector2(1,0).rotated(r) * 1000.0 * knockback)
 
 func _on_fire_timer_timeout() -> void:
 	can_fire = true
