@@ -37,6 +37,7 @@ func _on_droplet_body_entered(obj: Node) -> void:
 	if !taken and self.hp > 0 and obj == Game.lvl.player:
 		obj.hp += hp
 		set_hp(0)
+		Game.play_sound("pop1", position)
 
 func _on_droplet_area_entered(obj: Area2D) -> void:
 	if !taken and randf() < 0.25 and obj.is_class("Droplet") and !obj.taken and obj.hp >= self.hp:

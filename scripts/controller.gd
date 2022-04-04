@@ -65,15 +65,26 @@ func _ready() -> void:
 			streamPlayer.attenuation = 2.0
 			sounds[streamName] = streamPlayer
 			soundFX.add_child(streamPlayer)
+		elif fname.get_extension() == "wav":
+			var streamName: String = fname.get_basename()
+			var stream: AudioStreamSample = load("res://audio/" + fname)
+			var streamPlayer = AudioStreamPlayer2D.new()
+			streamPlayer.name = streamName
+			streamPlayer.stream = stream
+			streamPlayer.autoplay = false
+			streamPlayer.bus = "FX"
+			streamPlayer.attenuation = 2.0
+			sounds[streamName] = streamPlayer
+			soundFX.add_child(streamPlayer)
 		fname = audioDir.get_next()
 	
 	add_child(soundFX)
 
-	# music.stream = load("res://audio/music.mp3")
-	# music.stream.loop = true
-	# music.play()
-	# music.volume_db = -7.0
-	# add_child(music)
+	music.stream = load("res://audio/music.mp3")
+	music.stream.loop = true
+	music.play()
+	music.volume_db = -7.0
+	add_child(music)
 
 
 func _input(event: InputEvent) -> void:

@@ -90,7 +90,7 @@ func set_wtype(v: int):
 			name = "rate"
 			icon.texture = tex_rate
 			weapon.rate = 2
-	weapon.cost = 0.5
+	weapon.cost = 0.25
 
 func _process(delta: float) -> void:
 	colshape.rotation += 0.5 * delta * sin(Game.t)
@@ -99,3 +99,4 @@ func _on_power_body_entered(body: Node) -> void:
 	if body == Game.lvl.player:
 		body.weapons[0].combine(weapon)
 		get_parent().remove_child(self)
+		Game.play_sound("ice1", position)

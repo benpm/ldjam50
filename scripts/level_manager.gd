@@ -79,10 +79,9 @@ func restart_level():
 	ui_fire_bar.show()
 	score = 0.0
 	enemy_count = 0
-	var scene_children = get_children()
-	for c in scene_children:
-		if c.is_in_group("game_object"):
-			c.get_parent().remove_child(c)
+	var game_objects = get_tree().get_nodes_in_group("game_object")
+	for obj in game_objects:
+		obj.get_parent().remove_child(obj)
 	player = Game._player.instance()
 	add_child(player)
 	_on_spawn_timer_timeout()

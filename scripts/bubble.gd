@@ -53,6 +53,10 @@ func set_hp(v: float):
 
 func destroy() -> void:
 	get_parent().remove_child(self)
+	if init_hp > 10:
+		Game.play_sound("break", position)
+	else:
+		Game.play_sound("break_small", position)
 
 func fire(angle: float) -> void:
 	if not can_fire: return
@@ -71,11 +75,13 @@ func fire(angle: float) -> void:
 	set_fire_rate(frate * (1.0 / (1.0 + freeze)))
 	set_hp(hp - fcost)
 	can_fire = false
+	Game.play_sound("hit2", position)
 
 func on_bullet_hit(bullet) -> void:
 	if hp <= 0.0: return
 	set_hp(hp - bullet.dmg)
 	freeze += bullet.freeze
+	Game.play_sound("hit3", position)
 	var r = bullet.rotation - PI / 2.0
 	if self != Game.lvl.player:
 		Game.lvl.make_droplet(bullet.position,

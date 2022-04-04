@@ -26,7 +26,7 @@ func _process(delta: float) -> void:
 		var aim_point: Vector2 = Game.lvl.player.position
 		if smart_aim:
 			aim_point = Game.lvl.player.position \
-				+ Game.lvl.player.linear_velocity * delta * (position.distance_to(Game.lvl.player.position) / 20.0)
+				+ Game.lvl.player.linear_velocity * delta * (position.distance_to(Game.lvl.player.position) / 80.0)
 		match behavior:
 			Behavior.Chase:
 				dir = dir.linear_interpolate((p - position).normalized(), 0.05)
@@ -35,12 +35,11 @@ func _process(delta: float) -> void:
 					dir = Vector2.ZERO
 			Behavior.Snipe:
 				if p.distance_to(Game.lvl.player.position) < 20:
-					sprite.rotation = lerp_angle(sprite.rotation,
-						get_angle_to(Game.lvl.player.position) + PI/2.0, 0.1)
-					if can_fire:
-						fire(get_angle_to(aim_point) + PI/2.0)
+					sprite.rotation = lerp_angle(sprite.rotation, get_angle_to(aim_point) + PI/2.0, 0.1)
 				else:
 					dir = dir.linear_interpolate((p - position).normalized(), 0.05)
+				if can_fire:
+					fire(get_angle_to(aim_point) + PI/2.0)
 		if dir.length() > 0.1:
 			sprite.rotation = atan2(dir.y, dir.x) + PI/2.0
 			apply_central_impulse(dir.normalized() * speed * (1/(freeze + 1)) * delta)
