@@ -15,6 +15,7 @@ export(float) var recoil := 0.0
 export(float) var freeze := 0.0
 export(int) var split := 0
 export(float) var rate := 0.0
+export(float) var cost := 0.0
 
 func spawn(creator: PhysicsBody2D, pos: Vector2, rot: float) -> Bullet:
 	var b: Bullet = Game._bullet.instance()
@@ -45,4 +46,5 @@ func combine(other):
 	self.freeze += other.freeze
 	self.split += other.split
 	self.rate += other.rate
+	self.cost += other.cost
 	print_debug("combine: " + self.name + " + " + other.name)

@@ -30,6 +30,9 @@ const MAIN_LAYER: int = 1
 const ENEMY_BULLET_LAYER: int = 2
 const PLAYER_BULLET_LAYER: int = 4
 
+var level_size = 3250
+var bounds: Rect2 = Rect2(Vector2(-level_size, -level_size), Vector2(level_size * 2, level_size * 2))
+
 # Called on game start
 func _ready() -> void:
 

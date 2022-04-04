@@ -14,6 +14,10 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	set_hp(hp - evap_rate * delta)
 	Game.ui_hp_bar.value = lerp(Game.ui_hp_bar.value, -(1.0 / (hp / 20.0 + 1.0)) + 1.0, 0.25)
+	if hp < 5.0:
+		Game.ui_hp_bar.modulate = Color(0x7DBEFF).linear_interpolate(Color.white, sin(Game.t * 20.0) * 0.5 + 1.0)
+	else:
+		Game.ui_hp_bar.modulate = Color.white
 
 func _physics_process(delta: float) -> void:
 	if dead:

@@ -25,7 +25,7 @@ texture = ExtResource( 1 )
 wait_time = 0.25
 
 [node name="path_timer" type="Timer" parent="."]
-wait_time = 3.0
+wait_time = 0.5
 
 [node name="default_weapon" type="Node" parent="."]
 script = ExtResource( 3 )

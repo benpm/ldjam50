@@ -74,7 +74,7 @@ func set_wtype(v: int):
 	print_debug(name)
 
 func _process(delta: float) -> void:
-	colshape.rotation += 0.5 * delta * sin(Game.t / 10.0)
+	colshape.rotation += 0.5 * delta * sin(Game.t)
 
 func _on_power_body_entered(body: Node) -> void:
 	if body == Game.player:

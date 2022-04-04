@@ -51,6 +51,7 @@ func destroy() -> void:
 func fire(angle: float) -> void:
 	if not can_fire: return
 	var frate := 0.0
+	var fcost := 0.0
 	for weapon in weapons:
 		var split_offset = (weapon.split - 1) / 2.0
 		for i in range(weapon.split):
@@ -59,7 +60,9 @@ func fire(angle: float) -> void:
 			get_parent().add_child(bullet)
 		apply_central_impulse(Vector2(0,1).rotated(angle) * 250.0 * weapon.recoil)
 		frate += weapon.rate
+		fcost += weapon.cost
 	set_fire_rate(frate)
+	set_hp(hp - fcost)
 	can_fire = false
 
 func on_bullet_hit(bullet) -> void:

@@ -18,7 +18,11 @@ func _ready() -> void:
 	scale = Vector2.ZERO
 
 func _process(delta: float) -> void:
-	set_hp(hp - 0.1 * delta)
+	set_hp(hp - 0.35 * delta)
+
+	if !Game.bounds.has_point(position):
+		get_parent().remove_child(self)
+		return
 
 	if taken:
 		vel = Vector2.ZERO
