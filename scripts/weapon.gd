@@ -16,6 +16,11 @@ export(float) var freeze := 0.0
 export(int) var split := 0
 export(float) var rate := 0.0
 export(float) var cost := 0.0
+export(Texture) var tex: Texture = null
+export(bool) var attractor := false
+export(Bullet.BulletAnimation) var anim := Bullet.BulletAnimation.None
+export(bool) var accelerate := false
+export(float) var vanish_time := 2.0
 
 func spawn(creator: PhysicsBody2D, pos: Vector2, rot: float) -> Bullet:
 	var b: Bullet = Game._bullet.instance()
@@ -26,6 +31,10 @@ func spawn(creator: PhysicsBody2D, pos: Vector2, rot: float) -> Bullet:
 	b.dmg = damage
 	b.scale = Vector2.ONE * bullet_size
 	b.knockback = knockback
+	b.attractor = attractor
+	b.anim = anim
+	b.accelerate = accelerate
+	b.vanish_time = vanish_time
 	if creator == Game.player:
 		b.collision_layer = Game.PLAYER_BULLET_LAYER
 		b.collision_mask = Game.ENEMY_BULLET_LAYER
@@ -47,4 +56,6 @@ func combine(other):
 	self.split += other.split
 	self.rate += other.rate
 	self.cost += other.cost
-	print_debug("combine: " + self.name + " + " + other.name)
+	if other.tex != null:
+		self.tex = other.tex
+	self.attractor = self.attractor || other.attractor

@@ -58,6 +58,7 @@ func fire(angle: float) -> void:
 			var angle_offset = rand_range(-1.0, 1.0) * (1.0 / weapon.precision) * 0.05
 			var bullet = weapon.spawn(self, self.position, angle + 0.1 * (i - split_offset) + angle_offset)
 			get_parent().add_child(bullet)
+			bullet.sprite.texture = weapon.tex
 		apply_central_impulse(Vector2(0,1).rotated(angle) * 250.0 * weapon.recoil)
 		frate += weapon.rate
 		fcost += weapon.cost

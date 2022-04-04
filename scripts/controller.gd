@@ -16,6 +16,7 @@ onready var ui_name_text: LineEdit = ui_death_screen.get_node("name_container/na
 
 const _bullet: PackedScene = preload("res://objects/bullet.tscn")
 const _enemy_bubble: PackedScene = preload("res://objects/enemy_bubble.tscn")
+const _enemy_sniper_1: PackedScene = preload("res://objects/enemy_sniper_1.tscn")
 const _droplet: PackedScene = preload("res://objects/droplet.tscn")
 const _power: PackedScene = preload("res://objects/power.tscn")
 const _player: PackedScene = preload("res://objects/player.tscn")

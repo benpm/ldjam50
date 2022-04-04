@@ -9,6 +9,10 @@ var dir: Vector2
 var path: PoolVector2Array
 var path_idx: int
 
+enum Behavior { Chase, Snipe }
+
+export(Behavior) var behavior: int = Behavior.Chase
+
 func _ready() -> void:
 	var wait_time = $path_timer.wait_time
 	$path_timer.start(randf() * wait_time)
@@ -18,13 +22,24 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if path_idx < path.size():
 		var p: Vector2 = path[path_idx]
-		dir = dir.linear_interpolate((p - position).normalized(), 0.05)
-		if p.distance_to(Game.player.position) < 200 and can_fire:
-			fire(get_angle_to(p) + PI/2.0)
-			dir = Vector2.ZERO
-		sprite.rotation = atan2(dir.y, dir.x)
+		match behavior:
+			Behavior.Chase:
+				dir = dir.linear_interpolate((p - position).normalized(), 0.05)
+				if p.distance_to(Game.player.position) < 200 and can_fire:
+					fire(get_angle_to(p) + PI/2.0)
+					dir = Vector2.ZERO
+			Behavior.Snipe:
+				if p.distance_to(Game.player.position) < 20:
+					sprite.rotation = lerp_angle(sprite.rotation,
+						get_angle_to(Game.player.position) + PI/2.0, 0.1)
+					if can_fire:
+						fire(get_angle_to(Game.player.position) + PI/2.0)
+				else:
+					dir = dir.linear_interpolate((p - position).normalized(), 0.05)
+		if dir.length() > 0.1:
+			sprite.rotation = atan2(dir.y, dir.x) + PI/2.0
 		sprite.scale.x = sprite_init_scale.x + dir.length() * 0.035
-		if position.distance_to(p) < 50:
+		if position.distance_to(p) < 10:
 			path_idx += 1
 
 func _physics_process(delta: float) -> void:

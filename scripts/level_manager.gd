@@ -9,6 +9,12 @@ func _ready() -> void:
 	for i in range(10):
 		_on_power_timer_timeout()
 	
+	
+	var n: Enemy = Game._enemy_sniper_1.instance()
+	n.position = Vector2(-500, -500)
+	add_child(n)
+	Game.enemy_count += 1
+	
 func _on_spawn_timer_timeout() -> void:
 	if Game.enemy_count < 30:
 		for _i in range(10):
@@ -18,6 +24,7 @@ func _on_spawn_timer_timeout() -> void:
 				n.position = Vector2(rand_range(-3000, 3000), rand_range(-3000, 3000))
 			add_child(n)
 			Game.enemy_count += 1
+
 
 func restart_level():
 	print_debug("restart_level")
