@@ -54,7 +54,7 @@ func set_wtype(v: int):
 			weapon.speed = -0.25
 			weapon.damage = 1.0
 			weapon.knockback = 0.25
-			weapon.bullet_size = 1
+			weapon.bullet_size = 0.5
 			weapon.recoil = 0.35
 			weapon.tex = bullet_tex_5
 		WeaponType.sharp:
@@ -90,7 +90,7 @@ func set_wtype(v: int):
 			name = "rate"
 			icon.texture = tex_rate
 			weapon.rate = 2
-	weapon.cost = 1
+	weapon.cost = 0.5
 
 func _process(delta: float) -> void:
 	colshape.rotation += 0.5 * delta * sin(Game.t)

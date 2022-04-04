@@ -7,12 +7,16 @@ func is_class(name): return name == get_class() or name == .get_class() or .is_c
 var evap_rate: float = 0.1
 var dead := false
 
+const max_evap := 4.0
+
 func _ready() -> void:
 	Game.ui_hp_bar.max_value = 1.0
 	Game.ui_hp_bar.value = -(1.0 / (hp / 20.0 + 1.0)) + 1.0
+	Game.ui_fire_bar.max_value = max_evap
 
 func _process(delta: float) -> void:
-	evap_rate = min(evap_rate + delta * 0.01, 4.0)
+	evap_rate = min(evap_rate + delta * 0.0035, max_evap)
+	Game.ui_fire_bar.value = evap_rate
 	set_hp(hp - evap_rate * delta)
 	Game.ui_hp_bar.value = lerp(Game.ui_hp_bar.value, -(1.0 / (hp / 20.0 + 1.0)) + 1.0, 0.25)
 	if hp < 5.0:

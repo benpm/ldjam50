@@ -12,6 +12,7 @@ onready var nav: Navigation2D = scene.get_node("nav")
 onready var ui_death_screen: Control = ui.get_node("death_screen")
 onready var ui_score_text: Label = ui_death_screen.get_node("death_container/score_text")
 onready var ui_hp_bar: TextureProgress = ui.get_node("hp_bar_container/CenterContainer/hp_bar")
+onready var ui_fire_bar: TextureProgress = ui.get_node("fire_bar_container/CenterContainer/fire_bar")
 onready var ui_name_text: LineEdit = ui_death_screen.get_node("name_container/name_text")
 
 const _bullet: PackedScene = preload("res://objects/bullet.tscn")
@@ -92,6 +93,7 @@ func _ready() -> void:
 func start_game():
 	ui_death_screen.hide()
 	ui_hp_bar.show()
+	ui_fire_bar.show()
 	score = 0.0
 	enemy_count = 0
 	var scene_children = scene.get_children()
@@ -135,6 +137,7 @@ func player_died():
 	ui_death_screen.show()
 	ui_score_text.text = "%.1f" % score
 	ui_hp_bar.hide()
+	ui_fire_bar.hide()
 	SilentWolf.Scores.persist_score(player_name, score)
 
 

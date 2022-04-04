@@ -36,7 +36,7 @@ func _process(delta: float) -> void:
 	last_pos = position
 	move_local_y(-speed * delta)
 	if accelerate:
-		speed += 100.0 * delta
+		speed += 150.0 * delta
 	if attractor:
 		rotation = lerp_angle(rotation, position.angle_to_point(Game.player.position) - PI/2.0, 0.05)
 	match anim:
