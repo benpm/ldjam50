@@ -26,5 +26,13 @@ wait_time = 0.25
 
 [node name="default_weapon" type="Node" parent="."]
 script = ExtResource( 4 )
+bullet_size = 1.0
+speed = 1.0
+damage = 1.0
+precision = 1.0
+knockback = 1.0
+recoil = 1.0
+split = 1
+rate = 3.0
 
 [connection signal="timeout" from="fire_timer" to="." method="_on_fire_timer_timeout"]

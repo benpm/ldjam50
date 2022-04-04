@@ -8,17 +8,12 @@ var evap_rate: float = 0.1
 var dead := false
 
 func _ready() -> void:
-	._ready()
 	Game.ui_hp_bar.max_value = 1.0
 	Game.ui_hp_bar.value = -(1.0 / (hp / 20.0 + 1.0)) + 1.0
 
 func _process(delta: float) -> void:
-	._process(delta)
 	set_hp(hp - evap_rate * delta)
 	Game.ui_hp_bar.value = lerp(Game.ui_hp_bar.value, -(1.0 / (hp / 20.0 + 1.0)) + 1.0, 0.25)
-
-func set_hp(v: float):
-	.set_hp(v)
 
 func _physics_process(delta: float) -> void:
 	if dead:
@@ -36,6 +31,9 @@ func _physics_process(delta: float) -> void:
 	
 	if Input.is_action_pressed("fire"):
 		fire(get_angle_to(get_global_mouse_position()) + PI/2.0)
+	
+	sprite.rotation = atan2(self.linear_velocity.y, self.linear_velocity.x)
+	sprite.scale.x = sprite_init_scale.x + self.linear_velocity.length() * 1e-4
 
 func destroy() -> void:
 	if dead: return

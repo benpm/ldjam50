@@ -17,21 +17,18 @@ onready var ui_name_text: LineEdit = ui_death_screen.get_node("name_container/na
 const _bullet: PackedScene = preload("res://objects/bullet.tscn")
 const _enemy_bubble: PackedScene = preload("res://objects/enemy_bubble.tscn")
 const _droplet: PackedScene = preload("res://objects/droplet.tscn")
+const _power: PackedScene = preload("res://objects/power.tscn")
 const _player: PackedScene = preload("res://objects/player.tscn")
 
 var player_name: String = ""
-
 var sounds: Dictionary
-
 var enemy_count := 0
-
 var score := 0.0
+var t := 0.0
 
 const MAIN_LAYER: int = 1
 const ENEMY_BULLET_LAYER: int = 2
 const PLAYER_BULLET_LAYER: int = 4
-
-
 
 # Called on game start
 func _ready() -> void:
@@ -87,9 +84,10 @@ func start_game():
 		if c.is_in_group("game_object"):
 			c.get_parent().remove_child(c)
 	player = _player.instance()
-	add_child(player)
+	scene.add_child(player)
 
 func _process(delta: float) -> void:
+	t += delta
 	if player and not player.dead:
 		score += delta
 

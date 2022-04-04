@@ -22,6 +22,8 @@ func _process(delta: float) -> void:
 		if p.distance_to(Game.player.position) < 200 and can_fire:
 			fire(get_angle_to(p) + PI/2.0)
 			dir = Vector2.ZERO
+		sprite.rotation = atan2(dir.y, dir.x)
+		sprite.scale.x = sprite_init_scale.x + dir.length() * 0.035
 		if position.distance_to(p) < 50:
 			path_idx += 1
 
