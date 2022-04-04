@@ -25,7 +25,8 @@ func _process(delta: float) -> void:
 		var p: Vector2 = path[path_idx]
 		var aim_point: Vector2 = Game.player.position
 		if smart_aim:
-			aim_point = Game.player.position + Game.player.linear_velocity * delta
+			aim_point = Game.player.position \
+				+ Game.player.linear_velocity * delta * (position.distance_to(Game.player.position) / 20.0)
 		match behavior:
 			Behavior.Chase:
 				dir = dir.linear_interpolate((p - position).normalized(), 0.05)

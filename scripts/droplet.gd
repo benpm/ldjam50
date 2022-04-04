@@ -27,15 +27,15 @@ func _process(delta: float) -> void:
 	if taken:
 		vel = Vector2.ZERO
 		position = lerp(position, Game.player.position, 0.2)
-		if scale.length() < 0.05:
-			get_parent().remove_child(self)
 	else:
-		if position.distance_to(Game.player.position) < 150.0:
+		if position.distance_to(Game.player.position) < 500.0:
 			vel = vel.linear_interpolate((Game.player.position - position).normalized() * 1000.0, 0.1)
 		position += vel * delta
-		vel *= 0.99
+		vel *= 0.98
 	
 	scale = lerp(scale, Vector2.ONE * sqrt(hp), 0.15)
+	if scale.length() < 0.05 || hp < -1.0:
+		get_parent().remove_child(self)
 
 func _on_droplet_body_entered(obj: Node) -> void:
 	if !taken and self.hp > 0 and obj == Game.player:
@@ -43,6 +43,6 @@ func _on_droplet_body_entered(obj: Node) -> void:
 		set_hp(0)
 
 func _on_droplet_area_entered(obj: Area2D) -> void:
-	if !taken and randf() < 0.25 and obj.is_class("Droplet") and !obj.taken:
+	if !taken and randf() < 0.25 and obj.is_class("Droplet") and !obj.taken and obj.hp >= self.hp:
 		obj.hp = (obj.hp + self.hp)
 		set_hp(0)

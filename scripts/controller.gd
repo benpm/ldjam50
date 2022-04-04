@@ -129,7 +129,7 @@ func make_droplet(pos: Vector2, vel: Vector2, amount: float):
 	node.position = pos
 	node.hp = amount
 	node.vel = vel
-	add_child(node)
+	scene.add_child(node)
 
 func player_died():
 	ui_death_screen.show()
