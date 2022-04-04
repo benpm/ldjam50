@@ -9,13 +9,13 @@ var dead := false
 
 func _ready() -> void:
 	._ready()
-	Game.ui_hp_bar.max_value = max_hp
+	Game.ui_hp_bar.max_value = 1.0
+	Game.ui_hp_bar.value = -(1.0 / (hp / 20.0 + 1.0)) + 1.0
 
 func _process(delta: float) -> void:
 	._process(delta)
 	set_hp(hp - evap_rate * delta)
-	var f = Game.ui_hp_bar.value
-	Game.ui_hp_bar.value = lerp(f, hp, 0.25)
+	Game.ui_hp_bar.value = lerp(Game.ui_hp_bar.value, -(1.0 / (hp / 20.0 + 1.0)) + 1.0, 0.25)
 
 func set_hp(v: float):
 	.set_hp(v)
@@ -38,6 +38,7 @@ func _physics_process(delta: float) -> void:
 		fire(get_angle_to(get_global_mouse_position()) + PI/2.0)
 
 func destroy() -> void:
+	if dead: return
 	hide()
 	$CollisionShape2D.disabled = true
 	dead = true

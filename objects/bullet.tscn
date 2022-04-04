@@ -6,7 +6,7 @@
 [sub_resource type="CircleShape2D" id=1]
 radius = 9.05539
 
-[node name="bullet" type="Area2D"]
+[node name="bullet" type="Area2D" groups=["game_object"]]
 z_index = -1
 script = ExtResource( 2 )
 

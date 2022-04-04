@@ -19,3 +19,6 @@ func _on_spawn_timer_timeout() -> void:
 func restart_level():
 	print_debug("restart_level")
 	Game.start_game()
+
+func _on_name_text_text_entered(new_text:String) -> void:
+	Game.player_name = new_text

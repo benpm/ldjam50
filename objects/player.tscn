@@ -7,7 +7,7 @@
 [sub_resource type="CircleShape2D" id=1]
 radius = 40.05
 
-[node name="player" type="RigidBody2D"]
+[node name="player" type="RigidBody2D" groups=["game_object"]]
 collision_mask = 3
 linear_damp = 20.0
 script = ExtResource( 2 )

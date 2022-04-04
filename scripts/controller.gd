@@ -11,12 +11,15 @@ var player: Player
 onready var nav: Navigation2D = scene.get_node("nav")
 onready var ui_death_screen: Control = ui.get_node("death_screen")
 onready var ui_score_text: Label = ui_death_screen.get_node("death_container/score_text")
-onready var ui_hp_bar: TextureProgress = ui.get_node("hp_bar_container/hp_bar")
+onready var ui_hp_bar: TextureProgress = ui.get_node("hp_bar_container/CenterContainer/hp_bar")
+onready var ui_name_text: LineEdit = ui_death_screen.get_node("name_container/name_text")
 
 const _bullet: PackedScene = preload("res://objects/bullet.tscn")
 const _enemy_bubble: PackedScene = preload("res://objects/enemy_bubble.tscn")
 const _droplet: PackedScene = preload("res://objects/droplet.tscn")
 const _player: PackedScene = preload("res://objects/player.tscn")
+
+var player_name: String = ""
 
 var sounds: Dictionary
 
@@ -28,8 +31,21 @@ const MAIN_LAYER: int = 1
 const ENEMY_BULLET_LAYER: int = 2
 const PLAYER_BULLET_LAYER: int = 4
 
+
+
 # Called on game start
 func _ready() -> void:
+
+	SilentWolf.configure({
+		"api_key": "rae5gwn0aJ5VK7X7qwSMu2OP9euG0U198dLmD3rX",
+		"game_id": "ldjam50",
+		"game_version": "1.0.2",
+		"log_level": 1
+	})
+
+	SilentWolf.configure_scores({
+		"open_scene_on_close": "res://scenes/menu.tscn"
+	})
 
 	# Load all the audio
 	var audioDir = Directory.new()
@@ -63,14 +79,13 @@ func _ready() -> void:
 
 func start_game():
 	ui_death_screen.hide()
-	ui.get_node("hp_bar_container/hp_bar").show()
+	ui_hp_bar.show()
 	score = 0.0
 	enemy_count = 0
-	var children = get_children()
-	for c in children:
-		if c.is_class("Enemy"):
+	var scene_children = scene.get_children()
+	for c in scene_children:
+		if c.is_in_group("game_object"):
 			c.get_parent().remove_child(c)
-	if player: player.get_parent().remove_child(player)
 	player = _player.instance()
 	add_child(player)
 
@@ -106,5 +121,7 @@ func make_droplet(pos: Vector2, vel: Vector2, amount: float):
 func player_died():
 	ui_death_screen.show()
 	ui_score_text.text = "%.1f" % score
-	ui.get_node("hp_bar_container/hp_bar").hide()
+	ui_hp_bar.hide()
+	SilentWolf.Scores.persist_score(player_name, score)
+
 
