@@ -42,4 +42,4 @@ func _on_bullet_body_entered(b: Node) -> void:
 	get_parent().call_deferred("remove_child", self)
 
 func _on_vanish_timer_timeout() -> void:
-	get_parent().call_deferred("remove_child", self)
+	get_parent().remove_child(self)

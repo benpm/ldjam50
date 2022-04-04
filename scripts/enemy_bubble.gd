@@ -12,6 +12,7 @@ var path_idx: int
 enum Behavior { Chase, Snipe }
 
 export(Behavior) var behavior: int = Behavior.Chase
+export(bool) var smart_aim := false
 
 func _ready() -> void:
 	var wait_time = $path_timer.wait_time
@@ -22,28 +23,29 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if path_idx < path.size():
 		var p: Vector2 = path[path_idx]
+		var aim_point: Vector2 = Game.player.position
+		if smart_aim:
+			aim_point = Game.player.position + Game.player.linear_velocity * delta
 		match behavior:
 			Behavior.Chase:
 				dir = dir.linear_interpolate((p - position).normalized(), 0.05)
 				if p.distance_to(Game.player.position) < 200 and can_fire:
-					fire(get_angle_to(p) + PI/2.0)
+					fire(get_angle_to(aim_point) + PI/2.0)
 					dir = Vector2.ZERO
 			Behavior.Snipe:
 				if p.distance_to(Game.player.position) < 20:
 					sprite.rotation = lerp_angle(sprite.rotation,
 						get_angle_to(Game.player.position) + PI/2.0, 0.1)
 					if can_fire:
-						fire(get_angle_to(Game.player.position) + PI/2.0)
+						fire(get_angle_to(aim_point) + PI/2.0)
 				else:
 					dir = dir.linear_interpolate((p - position).normalized(), 0.05)
 		if dir.length() > 0.1:
 			sprite.rotation = atan2(dir.y, dir.x) + PI/2.0
-		sprite.scale.x = sprite_init_scale.x + dir.length() * 0.035
+			apply_central_impulse(dir * speed * delta)
+		sprite.scale.y = sprite_init_scale.y + dir.length() * 0.035
 		if position.distance_to(p) < 10:
 			path_idx += 1
-
-func _physics_process(delta: float) -> void:
-	apply_central_impulse(dir * speed * delta)
 
 func on_bullet_hit(bullet) -> void:
 	.on_bullet_hit(bullet)

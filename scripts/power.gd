@@ -28,6 +28,11 @@ onready var tex_split: Texture = preload("res://sprites/power_split.png")
 onready var tex_weight: Texture = preload("res://sprites/power_weight.png")
 onready var tex_rate: Texture = preload("res://sprites/power_rate.png")
 
+onready var bullet_tex_basic: Texture = preload("res://sprites/bullet_basic.png")
+onready var bullet_tex_5: Texture = preload("res://sprites/bullet_5.png")
+onready var bullet_tex_4: Texture = preload("res://sprites/bullet_4.png")
+onready var bullet_tex_3: Texture = preload("res://sprites/bullet_3.png")
+
 var wtype: int = WeaponType.ice setget set_wtype
 
 func set_wtype(v: int):
@@ -46,11 +51,13 @@ func set_wtype(v: int):
 			weapon.knockback = 0.15
 			weapon.bullet_size = 0.25
 			weapon.recoil = 0.15
+			weapon.bullet_size = 0.25
 		WeaponType.sharp:
 			name = "sharp"
 			icon.texture = tex_sharp
 			weapon.speed = 0.25
 			weapon.damage = 2.0
+			weapon.tex = bullet_tex_4
 		WeaponType.punch:
 			name = "punch"
 			icon.texture = tex_punch
