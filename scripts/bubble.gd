@@ -77,12 +77,12 @@ func on_bullet_hit(bullet) -> void:
 	set_hp(hp - bullet.dmg)
 	freeze += bullet.freeze
 	var r = bullet.rotation - PI / 2.0
-	if self != Game.player:
-		Game.make_droplet(bullet.position,
+	if self != Game.lvl.player:
+		Game.lvl.make_droplet(bullet.position,
 			Vector2(1,rand_range(-0.7, 0.7)).rotated(r)*bullet.speed*rand_range(0.1, 0.25), rand_range(0.5, 2.0))
 		if hp <= 0.0:
 			for _i in range(rand_range(init_hp * 0.5, init_hp)):
-				Game.make_droplet(bullet.position,
+				Game.lvl.make_droplet(bullet.position,
 				Vector2(1,rand_range(-1.2, 1.2)).rotated(r)*bullet.speed*rand_range(0.1, 0.25)*3.0, rand_range(0.5, 2.0))
 	apply_central_impulse(Vector2(1,0).rotated(r) * 1000.0 * bullet.knockback)
 

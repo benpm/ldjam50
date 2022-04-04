@@ -96,6 +96,6 @@ func _process(delta: float) -> void:
 	colshape.rotation += 0.5 * delta * sin(Game.t)
 
 func _on_power_body_entered(body: Node) -> void:
-	if body == Game.player:
+	if body == Game.lvl.player:
 		body.weapons[0].combine(weapon)
 		get_parent().remove_child(self)

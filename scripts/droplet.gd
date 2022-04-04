@@ -22,10 +22,10 @@ func _process(delta: float) -> void:
 
 	if taken:
 		vel = Vector2.ZERO
-		position = lerp(position, Game.player.position, 0.2)
+		position = lerp(position, Game.lvl.player.position, 0.2)
 	else:
-		if position.distance_to(Game.player.position) < 500.0:
-			vel = vel.linear_interpolate((Game.player.position - position).normalized() * 1000.0, 0.1)
+		if position.distance_to(Game.lvl.player.position) < 500.0:
+			vel = vel.linear_interpolate((Game.lvl.player.position - position).normalized() * 1000.0, 0.1)
 		position += vel * delta
 		vel *= 0.98
 	
@@ -34,7 +34,7 @@ func _process(delta: float) -> void:
 		get_parent().remove_child(self)
 
 func _on_droplet_body_entered(obj: Node) -> void:
-	if !taken and self.hp > 0 and obj == Game.player:
+	if !taken and self.hp > 0 and obj == Game.lvl.player:
 		obj.hp += hp
 		set_hp(0)
 

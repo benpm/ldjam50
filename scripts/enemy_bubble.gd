@@ -23,20 +23,20 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if path_idx < path.size():
 		var p: Vector2 = path[path_idx]
-		var aim_point: Vector2 = Game.player.position
+		var aim_point: Vector2 = Game.lvl.player.position
 		if smart_aim:
-			aim_point = Game.player.position \
-				+ Game.player.linear_velocity * delta * (position.distance_to(Game.player.position) / 20.0)
+			aim_point = Game.lvl.player.position \
+				+ Game.lvl.player.linear_velocity * delta * (position.distance_to(Game.lvl.player.position) / 20.0)
 		match behavior:
 			Behavior.Chase:
 				dir = dir.linear_interpolate((p - position).normalized(), 0.05)
-				if p.distance_to(Game.player.position) < 200 and can_fire:
+				if p.distance_to(Game.lvl.player.position) < 200 and can_fire:
 					fire(get_angle_to(aim_point) + PI/2.0)
 					dir = Vector2.ZERO
 			Behavior.Snipe:
-				if p.distance_to(Game.player.position) < 20:
+				if p.distance_to(Game.lvl.player.position) < 20:
 					sprite.rotation = lerp_angle(sprite.rotation,
-						get_angle_to(Game.player.position) + PI/2.0, 0.1)
+						get_angle_to(Game.lvl.player.position) + PI/2.0, 0.1)
 					if can_fire:
 						fire(get_angle_to(aim_point) + PI/2.0)
 				else:
@@ -49,12 +49,12 @@ func _process(delta: float) -> void:
 			path_idx += 1
 
 func destroy() -> void:
-	Game.enemy_count -= 1
+	Game.lvl.enemy_count -= 1
 	.destroy()
 
 func _on_path_timer_timeout() -> void:
 	recompute_path()
 
 func recompute_path():
-	path = Game.nav.get_simple_path(position, Game.player.position)
+	path = Game.lvl.nav.get_simple_path(position, Game.lvl.player.position)
 	path_idx = 0

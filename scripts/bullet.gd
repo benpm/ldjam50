@@ -38,7 +38,7 @@ func _process(delta: float) -> void:
 	if accelerate:
 		speed += 150.0 * delta
 	if attractor:
-		rotation = lerp_angle(rotation, position.angle_to_point(Game.player.position) - PI/2.0, 0.05)
+		rotation = lerp_angle(rotation, position.angle_to_point(Game.lvl.player.position) - PI/2.0, 0.05)
 	match anim:
 		BulletAnimation.None:
 			pass

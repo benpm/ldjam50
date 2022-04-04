@@ -38,7 +38,7 @@ func spawn(creator: PhysicsBody2D, pos: Vector2, rot: float) -> Bullet:
 	b.bounce = bounce
 	b.penetrate = penetrate
 	b.freeze = freeze
-	if creator == Game.player:
+	if creator == Game.lvl.player:
 		b.collision_layer = Game.PLAYER_BULLET_LAYER
 		b.collision_mask = Game.ENEMY_BULLET_LAYER
 	else:

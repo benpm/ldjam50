@@ -10,19 +10,19 @@ var dead := false
 const max_evap := 4.0
 
 func _ready() -> void:
-	Game.ui_hp_bar.max_value = 1.0
-	Game.ui_hp_bar.value = -(1.0 / (hp / 20.0 + 1.0)) + 1.0
-	Game.ui_fire_bar.max_value = max_evap
+	Game.lvl.ui_hp_bar.max_value = 1.0
+	Game.lvl.ui_hp_bar.value = -(1.0 / (hp / 20.0 + 1.0)) + 1.0
+	Game.lvl.ui_fire_bar.max_value = max_evap
 
 func _process(delta: float) -> void:
 	evap_rate = min(evap_rate + delta * 0.0035, max_evap)
-	Game.ui_fire_bar.value = evap_rate
+	Game.lvl.ui_fire_bar.value = evap_rate
 	set_hp(hp - evap_rate * delta)
-	Game.ui_hp_bar.value = lerp(Game.ui_hp_bar.value, -(1.0 / (hp / 20.0 + 1.0)) + 1.0, 0.25)
+	Game.lvl.ui_hp_bar.value = lerp(Game.lvl.ui_hp_bar.value, -(1.0 / (hp / 20.0 + 1.0)) + 1.0, 0.25)
 	if hp < 5.0:
-		Game.ui_hp_bar.modulate = Color(0x7DBEFF).linear_interpolate(Color.white, sin(Game.t * 20.0) * 0.5 + 1.0)
+		Game.lvl.ui_hp_bar.modulate = Color(0x7DBEFF).linear_interpolate(Color.white, sin(Game.t * 20.0) * 0.5 + 1.0)
 	else:
-		Game.ui_hp_bar.modulate = Color.white
+		Game.lvl.ui_hp_bar.modulate = Color.white
 
 func _physics_process(delta: float) -> void:
 	if dead:
@@ -52,4 +52,4 @@ func destroy() -> void:
 	hide()
 	$CollisionShape2D.disabled = true
 	dead = true
-	Game.player_died()
+	Game.lvl.player_died()

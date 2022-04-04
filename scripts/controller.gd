@@ -4,16 +4,8 @@ extends Node2D
 
 onready var music := AudioStreamPlayer.new()
 onready var soundFX := Node2D.new()
-onready var scene := $"../scene_container/scene"
-onready var ui_node := $"../scene_container/UI"
-onready var ui := $"../scene_container/UI/container"
-var player: Player
-onready var nav: Navigation2D = scene.get_node("nav")
-onready var ui_death_screen: Control = ui.get_node("death_screen")
-onready var ui_score_text: Label = ui_death_screen.get_node("death_container/score_text")
-onready var ui_hp_bar: TextureProgress = ui.get_node("hp_bar_container/CenterContainer/hp_bar")
-onready var ui_fire_bar: TextureProgress = ui.get_node("fire_bar_container/CenterContainer/fire_bar")
-onready var ui_name_text: LineEdit = ui_death_screen.get_node("name_container/name_text")
+
+var lvl = null
 
 const _bullet: PackedScene = preload("res://objects/bullet.tscn")
 const _enemy_bubble: PackedScene = preload("res://objects/enemy_bubble.tscn")
@@ -33,18 +25,12 @@ const enemies := [
 	[_enemy_bubble_bigger, 6, 0.25]
 ]
 
-var player_name: String = ""
 var sounds: Dictionary
-var enemy_count := 0
-var score := 0.0
 var t := 0.0
 
 const MAIN_LAYER: int = 1
 const ENEMY_BULLET_LAYER: int = 2
 const PLAYER_BULLET_LAYER: int = 4
-
-var level_size = 3250
-var bounds: Rect2 = Rect2(Vector2(-level_size, -level_size), Vector2(level_size * 2, level_size * 2))
 
 # Called on game start
 func _ready() -> void:
@@ -88,30 +74,8 @@ func _ready() -> void:
 	# music.volume_db = -7.0
 	# add_child(music)
 
-	start_game()
-
-func start_game():
-	ui_death_screen.hide()
-	ui_hp_bar.show()
-	ui_fire_bar.show()
-	score = 0.0
-	enemy_count = 0
-	var scene_children = scene.get_children()
-	for c in scene_children:
-		if c.is_in_group("game_object"):
-			c.get_parent().remove_child(c)
-	player = _player.instance()
-	scene.add_child(player)
-
 func _process(delta: float) -> void:
 	t += delta
-	if player and not player.dead:
-		score += delta
-
-func _input(event: InputEvent) -> void:
-	if event.is_pressed():
-		if event.as_text() == "K":
-			player.destroy()
 
 # Call to play a sound
 func play_sound(name: String, pos = null):
@@ -119,6 +83,7 @@ func play_sound(name: String, pos = null):
 	if pos != null:
 		sounds[name].position = pos
 	sounds[name].play()
+
 # Set sounds to playing or not
 func sound_playing(name: String, playing: bool, pos = null):
 	if sounds[name].playing != playing:
@@ -126,18 +91,6 @@ func sound_playing(name: String, playing: bool, pos = null):
 	if pos != null:
 		sounds[name].position = pos
 
-func make_droplet(pos: Vector2, vel: Vector2, amount: float):
-	var node: Droplet = _droplet.instance()
-	node.position = pos
-	node.hp = amount
-	node.vel = vel
-	scene.add_child(node)
 
-func player_died():
-	ui_death_screen.show()
-	ui_score_text.text = "%.1f" % score
-	ui_hp_bar.hide()
-	ui_fire_bar.hide()
-	SilentWolf.Scores.persist_score(player_name, score)
 
 

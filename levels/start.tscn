@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://bubble_font_sml.tres" type="DynamicFont" id=1]
 [ext_resource path="res://scripts/main_camera.gd" type="Script" id=2]
@@ -17,6 +17,12 @@
 [ext_resource path="res://sprites/fire_bar_bg.png" type="Texture" id=15]
 [ext_resource path="res://sprites/bg_bubble_big.png" type="Texture" id=16]
 [ext_resource path="res://sprites/fire_bar_fg.png" type="Texture" id=17]
+[ext_resource path="res://sprites/button_return_hover.png" type="Texture" id=18]
+[ext_resource path="res://sprites/button_play_hover.png" type="Texture" id=19]
+[ext_resource path="res://sprites/button_return_press.png" type="Texture" id=20]
+[ext_resource path="res://sprites/button_play.png" type="Texture" id=21]
+[ext_resource path="res://sprites/button_return.png" type="Texture" id=22]
+[ext_resource path="res://sprites/button_play_press.png" type="Texture" id=23]
 
 [sub_resource type="NavigationPolygon" id=1]
 vertices = PoolVector2Array( -1024, -1024, 1024, -1024, 1024, -128, -1024, -128, 1088, -128, 1088, 128, 1024, 128, -1024, 128, 1024, 1024, -1024, 1024, -1088, 128, -1088, -128, 2048, -1024, 2048, -1088, 2304, -1088, 2304, -1024, 3200, -1024, 3200, 1024, 2304, 1024, 2048, 1024, 2304, 1088, 2048, 1088, 1152, -1024, 1152, -128, 1152, 1024, 1152, 128, 2048, 1152, 2304, 1152, 3200, 1152, 3200, 3200, 1152, 3200, 1152, 2304, 1152, 2048, 1024, 2304, 1024, 2048, 1152, 1152, -1024, 2048, -1024, 1152, 1024, 1152, -1024, 2304, 1024, 3200, -1024, 3200, -1088, 2304, -1088, 2048, -2304, 1152, -2304, 1088, -2048, 1088, -2048, 1152, -1152, 1152, -1152, 2048, -1152, 2304, -1152, 3200, -3200, 3200, -3200, 1152, -2304, -1024, -2304, -1088, -2048, -1088, -2048, -1024, -1152, -1024, -1152, -128, -1152, 128, -1152, 1024, -2048, 1024, -2304, 1024, -3200, 1024, -3200, -1024, -3200, -1152, -3200, -3200, -1152, -3200, -1152, -2304, -2304, -1152, -1088, -2304, -1088, -2048, -1152, -2048, -2048, -1152, -1152, -1152, -1024, -2304, -1024, -3200, 1024, -3200, 1024, -2304, 1088, -2304, 1088, -2048, 1024, -2048, -1024, -2048, 1024, -1152, -1024, -1152, 1152, -3200, 3200, -3200, 3200, -1152, 2304, -1152, 1152, -2304, 2048, -1152, 1152, -2048, 1152, -1152 )
@@ -46,6 +52,7 @@ scale_curve = SubResource( 4 )
 [node name="scene_container" type="Node"]
 
 [node name="UI" type="CanvasLayer" parent="."]
+pause_mode = 2
 
 [node name="container" type="Control" parent="UI"]
 anchor_right = 1.0
@@ -107,9 +114,16 @@ texture_under = ExtResource( 15 )
 texture_progress = ExtResource( 17 )
 
 [node name="death_screen" type="Control" parent="UI/container"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
+
+[node name="bg" type="ColorRect" parent="UI/container/death_screen"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color( 0.0745098, 0.188235, 0.239216, 0.658824 )
 
 [node name="button_menu" type="TextureButton" parent="UI/container/death_screen"]
 anchor_top = 1.0
@@ -139,14 +153,6 @@ texture_hover = ExtResource( 11 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-
-[node name="bg" type="ColorRect" parent="UI/container/death_screen/death_container"]
-margin_left = 512.0
-margin_top = 300.0
-margin_right = 512.0
-margin_bottom = 300.0
-mouse_filter = 2
-color = Color( 0.0745098, 0.188235, 0.239216, 0.737255 )
 
 [node name="score_text" type="Label" parent="UI/container/death_screen/death_container"]
 margin_left = 308.0
@@ -178,6 +184,54 @@ custom_fonts/font = ExtResource( 1 )
 text = "type your name here"
 align = 1
 expand_to_text_length = true
+
+[node name="pause_screen" type="Control" parent="UI/container"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="bg" type="ColorRect" parent="UI/container/pause_screen"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color( 0.0745098, 0.188235, 0.239216, 0.658824 )
+
+[node name="VBoxContainer" type="HBoxContainer" parent="UI/container/pause_screen"]
+anchor_right = 2.0
+anchor_bottom = 1.0
+margin_top = 216.0
+rect_scale = Vector2( 0.5, 0.5 )
+alignment = 1
+
+[node name="HBoxContainer2" type="CenterContainer" parent="UI/container/pause_screen/VBoxContainer"]
+margin_left = 766.0
+margin_right = 1022.0
+margin_bottom = 384.0
+rect_pivot_offset = Vector2( 128, 192 )
+
+[node name="button_exit" type="TextureButton" parent="UI/container/pause_screen/VBoxContainer/HBoxContainer2"]
+margin_top = 64.0
+margin_right = 256.0
+margin_bottom = 320.0
+rect_pivot_offset = Vector2( 128, 128 )
+texture_normal = ExtResource( 22 )
+texture_pressed = ExtResource( 20 )
+texture_hover = ExtResource( 18 )
+
+[node name="HBoxContainer" type="CenterContainer" parent="UI/container/pause_screen/VBoxContainer"]
+margin_left = 1026.0
+margin_right = 1282.0
+margin_bottom = 384.0
+rect_pivot_offset = Vector2( 128, 192 )
+
+[node name="button_continue" type="TextureButton" parent="UI/container/pause_screen/VBoxContainer/HBoxContainer"]
+margin_top = 64.0
+margin_right = 256.0
+margin_bottom = 320.0
+rect_pivot_offset = Vector2( 128, 128 )
+texture_normal = ExtResource( 21 )
+texture_pressed = ExtResource( 23 )
+texture_hover = ExtResource( 19 )
 
 [node name="scene" type="Node2D" parent="."]
 light_mask = 2
@@ -234,5 +288,7 @@ texture = ExtResource( 16 )
 
 [connection signal="pressed" from="UI/container/death_screen/button_restart" to="scene" method="restart_level"]
 [connection signal="text_entered" from="UI/container/death_screen/name_container/name_text" to="scene" method="_on_name_text_text_entered"]
+[connection signal="pressed" from="UI/container/pause_screen/VBoxContainer/HBoxContainer2/button_exit" to="scene" method="_on_button_exit_pressed"]
+[connection signal="pressed" from="UI/container/pause_screen/VBoxContainer/HBoxContainer/button_continue" to="scene" method="_on_button_continue_pressed"]
 [connection signal="timeout" from="scene/spawn_timer" to="scene" method="_on_spawn_timer_timeout"]
 [connection signal="timeout" from="scene/power_timer" to="scene" method="_on_power_timer_timeout"]
