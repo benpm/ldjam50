@@ -34,6 +34,7 @@ const PLAYER_BULLET_LAYER: int = 4
 
 # Called on game start
 func _ready() -> void:
+	pause_mode = PAUSE_MODE_PROCESS
 
 	SilentWolf.configure({
 		"api_key": "rae5gwn0aJ5VK7X7qwSMu2OP9euG0U198dLmD3rX",
@@ -43,7 +44,7 @@ func _ready() -> void:
 	})
 
 	SilentWolf.configure_scores({
-		"open_scene_on_close": "res://scenes/menu.tscn"
+		"open_scene_on_close": "res://levels/menu.tscn"
 	})
 
 	# Load all the audio
@@ -73,6 +74,11 @@ func _ready() -> void:
 	# music.play()
 	# music.volume_db = -7.0
 	# add_child(music)
+
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("pause") and lvl != null:
+		lvl.set_paused(!lvl.paused)
 
 func _process(delta: float) -> void:
 	t += delta
