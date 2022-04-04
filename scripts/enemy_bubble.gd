@@ -43,13 +43,10 @@ func _process(delta: float) -> void:
 					dir = dir.linear_interpolate((p - position).normalized(), 0.05)
 		if dir.length() > 0.1:
 			sprite.rotation = atan2(dir.y, dir.x) + PI/2.0
-			apply_central_impulse(dir * speed * delta)
+			apply_central_impulse(dir.normalized() * speed * (1/(freeze + 1)) * delta)
 		sprite.scale.y = sprite_init_scale.y + dir.length() * 0.035
 		if position.distance_to(p) < 10:
 			path_idx += 1
-
-func on_bullet_hit(bullet) -> void:
-	.on_bullet_hit(bullet)
 
 func destroy() -> void:
 	Game.enemy_count -= 1

@@ -35,6 +35,9 @@ func spawn(creator: PhysicsBody2D, pos: Vector2, rot: float) -> Bullet:
 	b.anim = anim
 	b.accelerate = accelerate
 	b.vanish_time = vanish_time
+	b.bounce = bounce
+	b.penetrate = penetrate
+	b.freeze = freeze
 	if creator == Game.player:
 		b.collision_layer = Game.PLAYER_BULLET_LAYER
 		b.collision_mask = Game.ENEMY_BULLET_LAYER
@@ -59,3 +62,16 @@ func combine(other):
 	if other.tex != null:
 		self.tex = other.tex
 	self.attractor = self.attractor || other.attractor
+
+	self.bullet_size = max(0.1, self.bullet_size)
+	self.speed = max(0.1, self.speed)
+	self.damage = max(1.0, self.damage)
+	self.penetrate = int(max(0, self.penetrate))
+	self.bounce = int(max(0, self.bounce))
+	self.precision = max(0.1, self.precision)
+	self.knockback = max(0.0, self.knockback)
+	self.recoil = max(0.0, self.recoil)
+	self.freeze = max(0.0, self.freeze)
+	self.split = int(max(1, self.split))
+	self.rate = max(0.1, self.rate)
+	self.cost = max(0.0, self.cost)

@@ -12,6 +12,7 @@ func _ready() -> void:
 	Game.ui_hp_bar.value = -(1.0 / (hp / 20.0 + 1.0)) + 1.0
 
 func _process(delta: float) -> void:
+	evap_rate = min(evap_rate + delta * 0.01, 4.0)
 	set_hp(hp - evap_rate * delta)
 	Game.ui_hp_bar.value = lerp(Game.ui_hp_bar.value, -(1.0 / (hp / 20.0 + 1.0)) + 1.0, 0.25)
 	if hp < 5.0:
@@ -24,15 +25,18 @@ func _physics_process(delta: float) -> void:
 		self.linear_velocity = Vector2.ZERO
 		return
 
+	var dir = Vector2.ZERO
 	if Input.is_action_pressed("left"):
-		self.apply_central_impulse(Vector2(-1, 0) * speed * delta)
+		dir += Vector2(-1, 0)
 	if Input.is_action_pressed("right"):
-		self.apply_central_impulse(Vector2(1, 0) * speed * delta)
+		dir += Vector2(1, 0)
 	if Input.is_action_pressed("down"):
-		self.apply_central_impulse(Vector2(0, 1) * speed * delta)
+		dir += Vector2(0, 1)
 	if Input.is_action_pressed("up"):
-		self.apply_central_impulse(Vector2(0, -1) * speed * delta)
+		dir += Vector2(0, -1)
 	
+	self.apply_central_impulse(dir.normalized() * speed * (1/(freeze + 1)) * delta)
+
 	if Input.is_action_pressed("fire"):
 		fire(get_angle_to(get_global_mouse_position()) + PI/2.0)
 	

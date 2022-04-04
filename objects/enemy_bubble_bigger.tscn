@@ -6,7 +6,7 @@
 [ext_resource path="res://sprites/bullet_3.png" type="Texture" id=4]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 78.0064
+radius = 79.2516
 
 [node name="enemy_bubble_bigger" type="RigidBody2D" groups=["game_object"]]
 collision_mask = 5
@@ -16,6 +16,7 @@ script = ExtResource( 2 )
 hp = 20.0
 speed = 20000.0
 fire_rate = 0.5
+smart_aim = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
@@ -32,9 +33,9 @@ wait_time = 0.5
 
 [node name="even_better_weapon" type="Node" parent="."]
 script = ExtResource( 3 )
-bullet_size = 1.0
+bullet_size = 1.25
 speed = 1.5
-damage = 5.0
+damage = 15.0
 bounce = 3
 precision = 10.0
 knockback = 1.0

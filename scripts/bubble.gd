@@ -16,6 +16,7 @@ var sprite_init_scale: Vector2
 
 var can_fire := false
 var weapons := []
+var freeze := 0.0
 
 func _ready() -> void:
 	fire_timer.start((1.0 / fire_rate) * rand_range(0.0, 1.0))
@@ -24,8 +25,14 @@ func _ready() -> void:
 	for child in get_children():
 		if child.is_class("Weapon"):
 			weapons.append(child)
-
-
+	
+func _process(delta: float) -> void:
+	if freeze > 0.0:
+		modulate.v = 1.0 + freeze * 0.25
+		freeze = clamp(freeze - delta, 0.0, 8.0)
+	else:
+		modulate.v = 1.0
+		freeze = 0.0
 
 func _integrate_forces(state):
 	rotation_degrees = 0
@@ -33,7 +40,6 @@ func _integrate_forces(state):
 func add_weapon(weapon: Weapon):
 	weapons.append(weapon)
 	add_child(weapon)
-	print_debug("Added weapon: " + weapon.name)
 
 func set_fire_rate(v: float):
 	fire_rate = v
@@ -62,13 +68,14 @@ func fire(angle: float) -> void:
 		apply_central_impulse(Vector2(0,1).rotated(angle) * 250.0 * weapon.recoil)
 		frate += weapon.rate
 		fcost += weapon.cost
-	set_fire_rate(frate)
+	set_fire_rate(frate * (1.0 / (1.0 + freeze)))
 	set_hp(hp - fcost)
 	can_fire = false
 
 func on_bullet_hit(bullet) -> void:
 	if hp <= 0.0: return
 	set_hp(hp - bullet.dmg)
+	freeze += bullet.freeze
 	var r = bullet.rotation - PI / 2.0
 	if self != Game.player:
 		Game.make_droplet(bullet.position,
