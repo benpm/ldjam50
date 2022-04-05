@@ -220,7 +220,6 @@ rect_pivot_offset = Vector2( 128, 192 )
 margin_right = 256.0
 margin_bottom = 256.0
 rect_pivot_offset = Vector2( 128, 128 )
-disabled = true
 texture_normal = ExtResource( 21 )
 texture_pressed = ExtResource( 23 )
 texture_hover = ExtResource( 19 )
@@ -332,6 +331,7 @@ visibility_rect = Rect2( -3250, -3250, 6500, 6500 )
 process_material = SubResource( 2 )
 texture = ExtResource( 16 )
 
+[connection signal="focus_exited" from="UI/container/death_screen/name_container/name_text" to="scene" method="_on_name_text_focus_exited"]
 [connection signal="text_entered" from="UI/container/death_screen/name_container/name_text" to="scene" method="_on_name_text_text_entered"]
 [connection signal="pressed" from="UI/container/death_screen/buttons/HBoxContainer2/button_exit" to="scene" method="_on_button_exit_pressed"]
 [connection signal="pressed" from="UI/container/death_screen/buttons/HBoxContainer/button_restart" to="scene" method="_on_button_restart_pressed"]

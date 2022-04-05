@@ -14,6 +14,7 @@ var dash_cost := 1.5
 var dir: Vector2
 
 func _ready() -> void:
+	hp = 10
 	Game.lvl.ui_hp_bar.max_value = 1.0
 	Game.lvl.ui_hp_bar.value = -(1.0 / (hp / 20.0 + 1.0)) + 1.0
 	Game.lvl.ui_fire_bar.max_value = max_evap

@@ -30,7 +30,7 @@ const enemies := [
 	[_enemy_bubble_bigger, 6, 0.25],
 	[_enemy_spikey, 0, 0.25],
 	[_enemy_spikey_2, 4, 0.25],
-	[_enemy_knife, 1, 0.20]
+	[_enemy_knife, 1, 1.00]
 ]
 
 var sounds: Dictionary
@@ -42,6 +42,28 @@ var sound_muted := false
 const MAIN_LAYER: int = 1
 const ENEMY_BULLET_LAYER: int = 2
 const PLAYER_BULLET_LAYER: int = 4
+
+const audio_break = preload("res://audio/break.ogg")
+const audio_break_small = preload("res://audio/break_small.ogg")
+const audio_dash = preload("res://audio/dash.ogg")
+const audio_hit1 = preload("res://audio/hit1.ogg")
+const audio_hit2 = preload("res://audio/hit2.ogg")
+const audio_hit3 = preload("res://audio/hit3.ogg")
+const audio_hit4 = preload("res://audio/hit4.ogg")
+const audio_ice1 = preload("res://audio/ice1.ogg")
+const audio_pop1 = preload("res://audio/pop1.ogg")
+const audio_wave = preload("res://audio/wave.ogg")
+
+func load_audio(stream_name: String, stream: AudioStreamOGGVorbis):
+	stream.loop = false
+	var streamPlayer = AudioStreamPlayer2D.new()
+	streamPlayer.name = stream_name
+	streamPlayer.stream = stream
+	streamPlayer.autoplay = false
+	streamPlayer.bus = "FX"
+	streamPlayer.attenuation = 2.0
+	sounds[stream_name] = streamPlayer
+	soundFX.add_child(streamPlayer)
 
 # Called on game start
 func _ready() -> void:
@@ -59,35 +81,16 @@ func _ready() -> void:
 	})
 
 	# Load all the audio
-	var audioDir = Directory.new()
-	audioDir.open("res://audio/")
-	audioDir.list_dir_begin(true, true)
-	var fname = audioDir.get_next()
-	while fname:
-		if fname.get_extension() == "ogg":
-			var streamName: String = fname.get_basename()
-			var stream: AudioStreamOGGVorbis = load("res://audio/" + fname)
-			stream.loop = false
-			var streamPlayer = AudioStreamPlayer2D.new()
-			streamPlayer.name = streamName
-			streamPlayer.stream = stream
-			streamPlayer.autoplay = false
-			streamPlayer.bus = "FX"
-			streamPlayer.attenuation = 2.0
-			sounds[streamName] = streamPlayer
-			soundFX.add_child(streamPlayer)
-		elif fname.get_extension() == "wav":
-			var streamName: String = fname.get_basename()
-			var stream: AudioStreamSample = load("res://audio/" + fname)
-			var streamPlayer = AudioStreamPlayer2D.new()
-			streamPlayer.name = streamName
-			streamPlayer.stream = stream
-			streamPlayer.autoplay = false
-			streamPlayer.bus = "FX"
-			streamPlayer.attenuation = 2.0
-			sounds[streamName] = streamPlayer
-			soundFX.add_child(streamPlayer)
-		fname = audioDir.get_next()
+	load_audio("break", audio_break)
+	load_audio("break_small", audio_break_small)
+	load_audio("dash", audio_dash)
+	load_audio("hit1", audio_hit1)
+	load_audio("hit2", audio_hit2)
+	load_audio("hit3", audio_hit3)
+	load_audio("hit4", audio_hit4)
+	load_audio("ice1", audio_ice1)
+	load_audio("pop1", audio_pop1)
+	load_audio("wave", audio_wave)
 	
 	add_child(soundFX)
 

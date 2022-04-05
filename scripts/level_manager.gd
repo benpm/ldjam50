@@ -76,13 +76,14 @@ func set_paused(v: bool):
 func restart_level():
 	print_debug("restart_level")
 	score_submitted = false
-	ui_button_restart.disabled = true
 	ui_check.hide()
 	ui_death_screen.hide()
 	ui_hp_bar.show()
 	ui_fire_bar.show()
 	score = 0.0
 	enemy_count = 0
+	wave = 0
+	wave_timer = 0.0
 	var game_objects = get_tree().get_nodes_in_group("game_object")
 	for obj in game_objects:
 		obj.get_parent().remove_child(obj)
@@ -104,7 +105,6 @@ func submit_score():
 		SilentWolf.Scores.persist_score(player_name, score)
 		score_submitted = true
 		ui_check.show()
-		ui_button_restart.disabled = false
 		print("score %s:%f submitted" % [player_name, score])
 
 func _on_power_timer_timeout() -> void:
@@ -135,8 +135,14 @@ func _on_button_exit_pressed() -> void:
 	get_tree().change_scene("res://levels/menu.tscn")
 
 func _on_button_continue_pressed() -> void:
+	player_name = ui_name_text.text
+	submit_score()
 	set_paused(false)
-
 
 func _on_button_restart_pressed() -> void:
 	restart_level()
+
+
+func _on_name_text_focus_exited() -> void:
+	player_name = ui_name_text.text
+	submit_score()
